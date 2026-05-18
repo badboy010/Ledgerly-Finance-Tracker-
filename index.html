@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Ledgerly - Personal Finance Tracker</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <main class="app-shell">
+      <aside class="sidebar">
+        <div class="brand">
+          <div class="brand-mark">L</div>
+          <div>
+            <h1>Ledgerly</h1>
+            <p>Personal finance</p>
+          </div>
+        </div>
+
+        <nav class="nav" aria-label="Primary">
+          <a class="active" href="#overview">
+            <span data-icon="layout-dashboard"></span>
+            Overview
+          </a>
+          <a href="#transactions">
+            <span data-icon="receipt-text"></span>
+            Transactions
+          </a>
+          <a href="#budgets">
+            <span data-icon="wallet-cards"></span>
+            Budgets
+          </a>
+        </nav>
+
+        <section class="month-card" aria-labelledby="month-title">
+          <p id="month-title">Viewing period</p>
+          <select id="monthSelect" aria-label="Select month"></select>
+        </section>
+      </aside>
+
+      <section class="workspace">
+        <header class="topbar">
+          <div>
+            <p class="eyebrow">Money snapshot</p>
+            <h2>Track cash flow, budgets, and spending habits.</h2>
+          </div>
+          <div class="topbar-actions">
+            <button class="icon-button" id="seedDemo" type="button" aria-label="Load demo data" title="Load demo data">
+              <span data-icon="sparkles"></span>
+            </button>
+            <button class="icon-button danger" id="clearData" type="button" aria-label="Clear all data" title="Clear all data">
+              <span data-icon="trash-2"></span>
+            </button>
+          </div>
+        </header>
+
+        <section id="overview" class="stats-grid" aria-label="Financial summary">
+          <article class="stat-panel">
+            <span data-icon="landmark"></span>
+            <p>Balance</p>
+            <strong id="balanceValue">$0</strong>
+          </article>
+          <article class="stat-panel income">
+            <span data-icon="trending-up"></span>
+            <p>Income</p>
+            <strong id="incomeValue">$0</strong>
+          </article>
+          <article class="stat-panel expense">
+            <span data-icon="trending-down"></span>
+            <p>Expenses</p>
+            <strong id="expenseValue">$0</strong>
+          </article>
+          <article class="stat-panel">
+            <span data-icon="piggy-bank"></span>
+            <p>Savings rate</p>
+            <strong id="savingsValue">0%</strong>
+          </article>
+        </section>
+
+        <section class="main-grid">
+          <section class="entry-panel" aria-labelledby="entry-title">
+            <div class="section-heading">
+              <div>
+                <p class="eyebrow">New entry</p>
+                <h3 id="entry-title">Add a transaction</h3>
+              </div>
+              <div class="segmented" role="group" aria-label="Transaction type">
+                <button class="active" type="button" data-type="expense">Expense</button>
+                <button type="button" data-type="income">Income</button>
+              </div>
+            </div>
+
+            <form id="transactionForm" class="transaction-form">
+              <label>
+                Description
+                <input id="descriptionInput" type="text" placeholder="Coffee, salary, rent" required>
+              </label>
+              <div class="form-row">
+                <label>
+                  Amount
+                  <input id="amountInput" type="number" min="0.01" step="0.01" placeholder="0.00" required>
+                </label>
+                <label>
+                  Date
+                  <input id="dateInput" type="date" required>
+                </label>
+              </div>
+              <label>
+                Category
+                <select id="categoryInput"></select>
+              </label>
+              <button class="primary-button" type="submit">
+                <span data-icon="plus"></span>
+                Add transaction
+              </button>
+            </form>
+          </section>
+
+          <section class="chart-panel" aria-labelledby="chart-title">
+            <div class="section-heading">
+              <div>
+                <p class="eyebrow">Spending mix</p>
+                <h3 id="chart-title">Category breakdown</h3>
+              </div>
+              <strong id="topCategory">No spending yet</strong>
+            </div>
+            <div class="chart-wrap">
+              <canvas id="categoryChart" width="520" height="320" aria-label="Expense chart"></canvas>
+            </div>
+          </section>
+        </section>
+
+        <section id="budgets" class="budget-panel" aria-labelledby="budget-title">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Monthly limits</p>
+              <h3 id="budget-title">Budgets</h3>
+            </div>
+            <form id="budgetForm" class="budget-form">
+              <select id="budgetCategory" aria-label="Budget category"></select>
+              <input id="budgetAmount" type="number" min="0" step="1" placeholder="Limit" aria-label="Budget amount">
+              <button class="icon-button" type="submit" aria-label="Save budget" title="Save budget">
+                <span data-icon="save"></span>
+              </button>
+            </form>
+          </div>
+          <div id="budgetList" class="budget-list"></div>
+        </section>
+
+        <section id="transactions" class="transactions-panel" aria-labelledby="transactions-title">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Ledger</p>
+              <h3 id="transactions-title">Recent transactions</h3>
+            </div>
+            <div class="filters">
+              <select id="filterCategory" aria-label="Filter by category"></select>
+              <select id="filterType" aria-label="Filter by type">
+                <option value="all">All types</option>
+                <option value="income">Income</option>
+                <option value="expense">Expenses</option>
+              </select>
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Description</th>
+                  <th>Category</th>
+                  <th>Date</th>
+                  <th>Amount</th>
+                  <th aria-label="Actions"></th>
+                </tr>
+              </thead>
+              <tbody id="transactionTable"></tbody>
+            </table>
+          </div>
+          <p id="emptyState" class="empty-state">No transactions match this view.</p>
+        </section>
+      </section>
+    </main>
+
+    <script src="app.js"></script>
+  </body>
+</html>
